@@ -3,7 +3,7 @@
 从 Tushare Pro 下载综合财务数据。
 
 下载贵州茅台（600519.SH）的综合财务指标（来自 fina_indicator 接口），
-保存为 CSV 至 data/ 子目录。
+保存为 CSV 至 fetch_data/ 子目录。
 
 运行前提：
     - 已安装 tushare（pip install tushare）
@@ -12,7 +12,7 @@
 
 默认参数：
     股票：600519.SH
-    输出文件：data/600519_SH_fina_tushare.csv
+    输出文件：fetch_data/600519_SH_fina_tushare.csv
 """
 import logging
 import os
@@ -26,7 +26,7 @@ logger = logging.getLogger(__name__)
 STOCK_CODE = '600519.SH'
 STOCK_NAME = '贵州茅台'
 
-DATA_DIR = Path(__file__).resolve().parent / "data"
+DATA_DIR = Path(__file__).resolve().parent / "fetch_data"
 
 # Tushare fina_indicator 接口字段列表
 # 文档: https://tushare.pro/document/2?doc_id=79
@@ -138,17 +138,17 @@ def download_financial_data():
     try:
         df = _fetch_and_parse()
         if df is None:
-            logger.error("Unable to retrieve financial data, check token permissions (requires 2000 credits)")
+            logger.error("Unable to retrieve financial fetch_data, check token permissions (requires 2000 credits)")
             return None
 
-        logger.info(f"Retrieved {len(df)} periods of financial data")
+        logger.info(f"Retrieved {len(df)} periods of financial fetch_data")
         logger.info(f"Report range: {df['end_date'].iloc[0]} to {df['end_date'].iloc[-1]}")
 
         output_file = _save_and_report(df)
         return output_file
 
     except Exception:
-        logger.exception("Error during data download")
+        logger.exception("Error during fetch_data download")
         return None
 
 
@@ -158,6 +158,6 @@ if __name__ == "__main__":
 
     if result:
         logger.info("=" * 60)
-        logger.info("Financial data download completed successfully")
+        logger.info("Financial fetch_data download completed successfully")
         logger.info(f"Output: {result}")
         logger.info("=" * 60)

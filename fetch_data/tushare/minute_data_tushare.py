@@ -2,7 +2,7 @@
 """
 从 Tushare Pro 下载分钟级 K 线数据。
 
-下载贵州茅台（600519.SH）指定交易日的前复权分钟数据，保存为 CSV 至 data/ 子目录。
+下载贵州茅台（600519.SH）指定交易日的前复权分钟数据，保存为 CSV 至 fetch_data/ 子目录。
 
 运行前提：
     - 已安装 tushare（pip install tushare）
@@ -13,7 +13,7 @@
     股票：600519.SH
     目标日期：20260811（全天）
     频率：1min（也支持 5min、15min、30min、60min）
-    输出文件：data/600519_SH_1min_tushare.csv
+    输出文件：fetch_data/600519_SH_1min_tushare.csv
 
 注意：Tushare 的分钟数据（1/5/15/30/60min）需要单独开通权限，
       普通积分用户无法获取。需要捐助 1000 元获取分钟行情权限。
@@ -38,7 +38,7 @@ STOCK_NAME = '贵州茅台'
 TARGET_DATE = '20260811'                 # 目标日期
 FREQ = '1min'                            # 可选：1min, 5min, 15min, 30min, 60min
 
-DATA_DIR = Path(__file__).resolve().parent / "data"
+DATA_DIR = Path(__file__).resolve().parent / "fetch_data"
 
 COLUMN_MAP = {'trade_time': 'datetime', 'vol': 'volume'}
 KEEP_COLUMNS = ['datetime', 'open', 'high', 'low', 'close', 'volume', 'amount']
@@ -55,7 +55,7 @@ def _get_pro():
 
 def _download_raw(pro):
     """调用 ts.pro_bar 下载原始分钟数据。"""
-    logger.info("Downloading raw minute data from Tushare ...")
+    logger.info("Downloading raw minute fetch_data from Tushare ...")
     df = ts.pro_bar(
         ts_code=STOCK_CODE,
         start_date=TARGET_DATE,
@@ -116,25 +116,25 @@ def download_minute_data():
         pro = _get_pro()
         logger.info("Initialization successful")
 
-        logger.info("Downloading %s data (forward-adjusted) ...", FREQ)
+        logger.info("Downloading %s fetch_data (forward-adjusted) ...", FREQ)
         raw = _download_raw(pro)
 
         if not has_valid_data(raw):
-            logger.error("Failed to fetch minute data. Possible reasons:")
+            logger.error("Failed to fetch minute fetch_data. Possible reasons:")
             logger.error("  1. Minute market permission not granted (requires donation of 1000 CNY)")
             logger.error("  2. Target date is not a trading day")
             logger.error("  3. Insufficient token permissions")
             return None
 
         df = _fetch_and_parse(raw)
-        logger.info("Successfully fetched %s minute data records", len(df))
+        logger.info("Successfully fetched %s minute fetch_data records", len(df))
         logger.info("Time range: %s to %s", df['datetime'].iloc[0], df['datetime'].iloc[-1])
 
         output_file = _save_and_report(df)
         return output_file
 
     except Exception:
-        logger.exception("Error during data download")
+        logger.exception("Error during fetch_data download")
         return None
 
 
@@ -145,6 +145,6 @@ if __name__ == "__main__":
 
     if result:
         logger.info("=" * 60)
-        logger.info("Minute data download completed!")
+        logger.info("Minute fetch_data download completed!")
         logger.info("Data file: %s", result)
         logger.info("=" * 60)

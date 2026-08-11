@@ -2,7 +2,7 @@
 """
 从 AkShare 下载日线 OHLCV 数据。
 
-下载贵州茅台（600519）的前复权日线数据，保存为 CSV 至 data/ 子目录。
+下载贵州茅台（600519）的前复权日线数据，保存为 CSV 至 fetch_data/ 子目录。
 
 运行前提：
     - 已安装 akshare（pip install akshare）
@@ -10,7 +10,7 @@
 默认参数：
     股票：600519
     日期范围：20240101 ~ 20260811
-    输出文件：data/600519_SH_daily_akshare.csv
+    输出文件：fetch_data/600519_SH_daily_akshare.csv
 """
 import logging
 from pathlib import Path
@@ -27,7 +27,7 @@ STOCK_CODE_FULL = "600519.SH"  # 完整代码，用于输出文件名
 DATA_START = "20240101"
 DATA_END = "20260811"
 
-DATA_DIR = Path(__file__).resolve().parent / "data"
+DATA_DIR = Path(__file__).resolve().parent / "fetch_data"
 
 COLUMN_MAP = {
     "日期": "date",
@@ -97,7 +97,7 @@ def download_daily_data():
     try:
         df = _fetch_and_parse()
         if not has_valid_data(df):
-            logger.error("Failed to fetch daily data, please check the stock code")
+            logger.error("Failed to fetch daily fetch_data, please check the stock code")
             return None
 
         logger.info("Successfully fetched %d daily records", len(df))
@@ -110,7 +110,7 @@ def download_daily_data():
         return _save_and_report(df)
 
     except Exception:
-        logger.exception("Error during data download")
+        logger.exception("Error during fetch_data download")
         return None
 
 

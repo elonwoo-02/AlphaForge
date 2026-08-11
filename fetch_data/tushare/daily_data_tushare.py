@@ -2,7 +2,7 @@
 """
 从 Tushare Pro 下载日线 OHLCV 数据。
 
-下载贵州茅台（600519.SH）的前复权日线数据，保存为 CSV 至 data/ 子目录。
+下载贵州茅台（600519.SH）的前复权日线数据，保存为 CSV 至 fetch_data/ 子目录。
 
 运行前提：
     - 已安装 tushare（pip install tushare）
@@ -11,7 +11,7 @@
 默认参数：
     股票：600519.SH
     日期范围：20240101 ~ 20260811
-    输出文件：data/600519_SH_daily_tushare.csv
+    输出文件：fetch_data/600519_SH_daily_tushare.csv
 """
 import logging
 import os
@@ -31,7 +31,7 @@ COLUMN_MAP = {'trade_date': 'date', 'vol': 'volume'}
 KEEP_COLUMNS = ['date', 'open', 'high', 'low', 'close', 'volume']
 DATE_FORMAT = '%Y%m%d'
 
-DATA_DIR = Path(__file__).resolve().parent / "data"
+DATA_DIR = Path(__file__).resolve().parent / "fetch_data"
 
 
 def _get_pro():
@@ -105,7 +105,7 @@ def download_daily_data():
     try:
         df = _fetch_and_parse()
         if df is None:
-            logger.error("No valid data retrieved, check token permissions and stock code")
+            logger.error("No valid fetch_data retrieved, check token permissions and stock code")
             return None
 
         logger.info(f"Retrieved {len(df)} daily bars")
@@ -116,7 +116,7 @@ def download_daily_data():
         return output_file
 
     except Exception:
-        logger.exception("Error during data download")
+        logger.exception("Error during fetch_data download")
         return None
 
 
@@ -126,6 +126,6 @@ if __name__ == "__main__":
 
     if result:
         logger.info("=" * 60)
-        logger.info("Daily data download completed successfully")
+        logger.info("Daily fetch_data download completed successfully")
         logger.info(f"Output: {result}")
         logger.info("=" * 60)

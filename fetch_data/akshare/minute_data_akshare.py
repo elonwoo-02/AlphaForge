@@ -2,7 +2,7 @@
 """
 从 AkShare 下载分钟级 K 线数据。
 
-下载贵州茅台（600519）指定交易日的分钟数据，保存为 CSV 至 data/ 子目录。
+下载贵州茅台（600519）指定交易日的分钟数据，保存为 CSV 至 fetch_data/ 子目录。
 
 运行前提：
     - 已安装 akshare（pip install akshare）
@@ -13,7 +13,7 @@
     股票：600519
     目标日期：2026-08-11（全天）
     周期：1（也支持 5、15、30、60）
-    输出文件：data/600519_SH_1min_akshare.csv
+    输出文件：fetch_data/600519_SH_1min_akshare.csv
 """
 import logging
 import pandas as pd
@@ -43,7 +43,7 @@ COLUMN_MAP = {
 }
 KEEP_COLUMNS = ['datetime', 'open', 'high', 'low', 'close', 'volume', 'amount']
 
-DATA_DIR = Path(__file__).resolve().parent / "data"
+DATA_DIR = Path(__file__).resolve().parent / "fetch_data"
 
 
 def _download_raw():
@@ -106,12 +106,12 @@ def download_minute_data():
     logger.info(f"Date: {TARGET_DATE}")
     logger.info(f"Period: {PERIOD}")
     logger.info("-" * 60)
-    logger.info("Note: AkShare minute data is only available for the most recent 5 trading days")
+    logger.info("Note: AkShare minute fetch_data is only available for the most recent 5 trading days")
 
     try:
         df = _fetch_and_parse()
         if df is None:
-            logger.error("No minute data retrieved (target date may exceed 5 trading day limit or be a non-trading day)")
+            logger.error("No minute fetch_data retrieved (target date may exceed 5 trading day limit or be a non-trading day)")
             return None
 
         logger.info(f"Retrieved {len(df)} minute bars")
@@ -121,7 +121,7 @@ def download_minute_data():
         return output_file
 
     except Exception:
-        logger.exception("Error during data download")
+        logger.exception("Error during fetch_data download")
         return None
 
 
@@ -131,6 +131,6 @@ if __name__ == "__main__":
 
     if result:
         logger.info("=" * 60)
-        logger.info("Minute data download completed successfully")
+        logger.info("Minute fetch_data download completed successfully")
         logger.info(f"Output: {result}")
         logger.info("=" * 60)

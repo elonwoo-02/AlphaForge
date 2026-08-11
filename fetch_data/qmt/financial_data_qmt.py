@@ -3,7 +3,7 @@
 从 QMT / miniQMT 下载综合财务数据。
 
 下载贵州茅台（600519.SH）的资产负债表、利润表、现金流量表、
-每股指标和股本结构数据，提取核心财务指标，保存为 CSV 至 data/ 子目录。
+每股指标和股本结构数据，提取核心财务指标，保存为 CSV 至 fetch_data/ 子目录。
 
 运行前提：
     - 已启动 miniQMT 客户端
@@ -12,7 +12,7 @@
 默认参数：
     股票：600519.SH
     日期范围：20140101 ~ 20261231
-    输出文件：data/600519_SH_fina_QMT.csv
+    输出文件：fetch_data/600519_SH_fina_QMT.csv
 """
 import time
 import logging
@@ -29,7 +29,7 @@ STOCK_NAME = '贵州茅台'
 DATA_START = '20140101'   # 财务数据起始日期
 DATA_END = '20261231'     # 财务数据截止日期
 
-DATA_DIR = Path(__file__).resolve().parent / "data"
+DATA_DIR = Path(__file__).resolve().parent / "fetch_data"
 
 # QMT财务数据下载为异步操作
 TABLE_LIST = ['Balance', 'Income', 'CashFlow', 'PershareIndex', 'Capital']
@@ -109,7 +109,7 @@ def extract_all_periods(data):
     从xtquant返回的单只股票财务数据中，提取所有报告期的综合财务指标。
 
     参数：
-      data: xtdata.get_financial_data 返回的 {stock: {table: data}} 中该股票的部分
+      fetch_data: xtdata.get_financial_data 返回的 {stock: {table: fetch_data}} 中该股票的部分
 
     返回：按报告期排列的记录列表
     """
@@ -278,7 +278,7 @@ def _download_raw():
     if downloaded_count[0] < total_tables:
         logger.warning(
             f"Only downloaded {downloaded_count[0]}/{total_tables} tables, "
-            f"attempting to fetch data anyway"
+            f"attempting to fetch fetch_data anyway"
         )
     else:
         logger.info("All financial tables downloaded")
@@ -365,23 +365,23 @@ def download_financial_data():
 
     try:
         _connect_qmt()
-        logger.info("Connected to QMT data service")
+        logger.info("Connected to QMT fetch_data service")
 
         _download_raw()
-        logger.info("Raw data download finished")
+        logger.info("Raw fetch_data download finished")
 
         df = _fetch_and_parse()
         if df is None:
-            logger.error("Unable to extract valid financial data")
+            logger.error("Unable to extract valid financial fetch_data")
             return None
 
-        logger.info(f"Extracted {len(df)} periods of financial data")
+        logger.info(f"Extracted {len(df)} periods of financial fetch_data")
 
         output_file = _save_and_report(df)
         return output_file
 
     except Exception:
-        logger.exception("Error during data download")
+        logger.exception("Error during fetch_data download")
         return None
 
 
@@ -391,6 +391,6 @@ if __name__ == "__main__":
 
     if result:
         logger.info("=" * 60)
-        logger.info("Financial data download completed successfully")
+        logger.info("Financial fetch_data download completed successfully")
         logger.info(f"Output: {result}")
         logger.info("=" * 60)

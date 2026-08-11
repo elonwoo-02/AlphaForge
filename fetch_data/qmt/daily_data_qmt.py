@@ -2,7 +2,7 @@
 """
 从 QMT / miniQMT 下载日线 OHLCV 数据。
 
-下载贵州茅台（600519.SH）的前复权日线数据，保存为 CSV 至 data/ 子目录。
+下载贵州茅台（600519.SH）的前复权日线数据，保存为 CSV 至 fetch_data/ 子目录。
 
 运行前提：
     - 已启动 miniQMT 客户端
@@ -11,7 +11,7 @@
 默认参数：
     股票：600519.SH
     日期范围：20240101 ~ 20260811
-    输出文件：data/600519_SH_daily_QMT.csv
+    输出文件：fetch_data/600519_SH_daily_QMT.csv
 """
 import time
 import logging
@@ -26,7 +26,7 @@ STOCK_CODE = '600519.SH'  # 贵州茅台股票代码
 STOCK_NAME = '贵州茅台'
 DATA_START = '20240101'   # 数据开始日期
 DATA_END = '20260811'     # 数据结束日期
-DATA_DIR = Path(__file__).resolve().parent / "data"
+DATA_DIR = Path(__file__).resolve().parent / "fetch_data"
 DATE_FORMAT = '%Y%m%d'  # QMT日期格式，用于时间戳解析
 WRITE_WAIT_SECONDS = 2  # QMT下载为异步操作，需等待数据写入本地缓存
 DAILY_FIELDS = ['open', 'high', 'low', 'volume']  # xtdata.get_market_data返回的OHLCV字段
@@ -111,11 +111,11 @@ def download_daily_data():
 
     try:
         _download_raw()
-        logger.info("Raw data download finished")
+        logger.info("Raw fetch_data download finished")
 
         df = _fetch_and_parse()
         if df is None:
-            logger.error("No valid data retrieved for the requested range")
+            logger.error("No valid fetch_data retrieved for the requested range")
             return None
 
         logger.info(f"Retrieved {len(df)} daily bars")
@@ -126,7 +126,7 @@ def download_daily_data():
         return output_file
 
     except Exception:
-        logger.exception("Error during data download")
+        logger.exception("Error during fetch_data download")
         return None
 
 
@@ -136,6 +136,6 @@ if __name__ == "__main__":
 
     if result:
         logger.info("=" * 60)
-        logger.info("Daily data download completed successfully")
+        logger.info("Daily fetch_data download completed successfully")
         logger.info(f"Output: {result}")
         logger.info("=" * 60)

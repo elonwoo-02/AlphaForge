@@ -2,7 +2,7 @@
 """
 从 QMT / miniQMT 下载分钟级 K 线数据。
 
-下载贵州茅台（600519.SH）指定交易日的前复权分钟数据，保存为 CSV 至 data/ 子目录。
+下载贵州茅台（600519.SH）指定交易日的前复权分钟数据，保存为 CSV 至 fetch_data/ 子目录。
 
 运行前提：
     - 已启动 miniQMT 客户端
@@ -12,7 +12,7 @@
     股票：600519.SH
     目标日期：20260811（全天）
     周期：1m（也支持 5m、15m、30m、60m）
-    输出文件：data/600519_SH_1min_QMT.csv
+    输出文件：fetch_data/600519_SH_1min_QMT.csv
 """
 import logging
 import pandas as pd
@@ -30,7 +30,7 @@ MINUTE_FIELDS = ['open', 'high', 'low', 'volume', 'amount']  # amount（成交�
 DATE_FORMAT = '%Y%m%d'  # QMT日期格式，用于动态计算次日日期作为end_time
 MINUTE_DATETIME_FORMAT = '%Y%m%d%H%M%S'  # QMT分钟级时间戳格式（YYYYMMDDHHmmss）
 WRITE_WAIT_SECONDS = 2  # QMT下载为异步操作，需等待数据写入本地缓存
-DATA_DIR = Path(__file__).resolve().parent / "data"
+DATA_DIR = Path(__file__).resolve().parent / "fetch_data"
 
 
 def _connect_qmt():
@@ -133,14 +133,14 @@ def download_minute_data():
 
     try:
         _connect_qmt()
-        logger.info("Connected to QMT data service")
+        logger.info("Connected to QMT fetch_data service")
 
         _download_raw()
-        logger.info("Raw data download finished")
+        logger.info("Raw fetch_data download finished")
 
         df = _fetch_and_parse()
         if df is None:
-            logger.error(f"No data available for {TARGET_DATE} (possibly a non-trading day)")
+            logger.error(f"No fetch_data available for {TARGET_DATE} (possibly a non-trading day)")
             return None
 
         logger.info(f"Retrieved {len(df)} minute bars")
@@ -150,7 +150,7 @@ def download_minute_data():
         return output_file
 
     except Exception:
-        logger.exception("Error during data download")
+        logger.exception("Error during fetch_data download")
         return None
 
 
@@ -160,6 +160,6 @@ if __name__ == "__main__":
 
     if result:
         logger.info("=" * 60)
-        logger.info("Minute data download completed successfully")
+        logger.info("Minute fetch_data download completed successfully")
         logger.info(f"Output: {result}")
         logger.info("=" * 60)

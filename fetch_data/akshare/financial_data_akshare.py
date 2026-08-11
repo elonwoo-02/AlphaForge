@@ -3,14 +3,14 @@
 从 AkShare 下载综合财务数据。
 
 下载贵州茅台（600519）的利润表、资产负债表、现金流量表，
-提取并计算核心财务指标，保存为 CSV 至 data/ 子目录。
+提取并计算核心财务指标，保存为 CSV 至 fetch_data/ 子目录。
 
 运行前提：
     - 已安装 akshare（pip install akshare）
 
 默认参数：
     股票：sh600519（新浪格式）
-    输出文件：data/600519_SH_fina_akshare.csv
+    输出文件：fetch_data/600519_SH_fina_akshare.csv
 """
 import logging
 from pathlib import Path
@@ -27,7 +27,7 @@ STOCK_CODE_SINA = 'sh600519'   # 贵州茅台（新浪格式：sh/sz + 代码）
 STOCK_NAME = '贵州茅台'
 STOCK_CODE_FULL = '600519.SH'  # 完整代码（用于输出文件名）
 
-DATA_DIR = Path(__file__).resolve().parent / "data"
+DATA_DIR = Path(__file__).resolve().parent / "fetch_data"
 
 FINANCIAL_REPORTS = [
     ('利润表', 'Income'),
@@ -267,13 +267,13 @@ def download_financial_data():
 
         df = pd.DataFrame(records)
         df = df.sort_values('end_date').reset_index(drop=True)
-        logger.info("Successfully extracted %d periods of financial data", len(df))
+        logger.info("Successfully extracted %d periods of financial fetch_data", len(df))
 
         output_file = _save_and_report(df)
         return output_file
 
     except Exception:
-        logger.exception("Error downloading financial data")
+        logger.exception("Error downloading financial fetch_data")
         return None
 
 
@@ -283,6 +283,6 @@ if __name__ == "__main__":
 
     if result:
         logger.info("=" * 60)
-        logger.info("Financial data download completed successfully")
+        logger.info("Financial fetch_data download completed successfully")
         logger.info(f"Output: {result}")
         logger.info("=" * 60)
