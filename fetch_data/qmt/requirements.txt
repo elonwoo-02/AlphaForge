@@ -1,0 +1,4 @@
+# QMT / miniQMT 数据源依赖
+# xtquant 随 QMT 客户端发布（离线 whl 包），不在公共 PyPI 上
+# 安装方式：pip install <QMT安装路径>/ext/xtquant-*.whl
+# xtquant

@@ -1,0 +1,23 @@
+# OKX crypto data
+fetch_data/okx/
+
+# Project plan
+ALPHA_FORGE_PLAN.md
+
+# Data files
+data/
+*.csv
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.env
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
