@@ -14,6 +14,12 @@ __pycache__/
 *.egg-info/
 .env
 
+# Strategy data & images
+strategy/multi_factor/data/
+*.png
+*.jpg
+*.jpeg
+
 # IDE
 .vscode/
 .idea/
